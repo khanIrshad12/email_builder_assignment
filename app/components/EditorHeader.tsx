@@ -7,10 +7,12 @@ import { useHelperProvider } from '../provider/HelperProvider'
 import { usePathname } from 'next/navigation'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
+import { useToast } from '@/hooks/use-toast'
 
 const EditorHeader = ({ viewHTMLCode }: { viewHTMLCode: (v: boolean) => void }) => {
     const path = usePathname();
     const { screenSize, setScreenSize, emailTemplate } = useHelperProvider();
+    const { toast } = useToast()
 
     const updateTemplate = useMutation(api.emailTemplate.UpdateTemplate);
     const handleSave = async () => {
@@ -20,6 +22,10 @@ const EditorHeader = ({ viewHTMLCode }: { viewHTMLCode: (v: boolean) => void }) 
             tid: path.split("/")[2],
             design
         })
+        toast({
+            title: "Email Template Saved Successfully",
+           
+          })
         console.log("click save");
 
     }
@@ -28,6 +34,7 @@ const EditorHeader = ({ viewHTMLCode }: { viewHTMLCode: (v: boolean) => void }) 
             <Link href="/" className="text-2xl font-bold">
                 EmailBuilder
             </Link>
+            
             {(path !== "/dashboard" && path !== "/") &&
                 <>
                     <div className='space-x-2'>

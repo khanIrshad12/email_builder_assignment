@@ -7,9 +7,16 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 import { Copy } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
 const ViewHtmlDialog = ({ openDialog, htmlCode, closeDialog }: { openDialog: boolean, htmlCode: string, closeDialog: () => void }) => {
+    const { toast } = useToast()
     const CopyCode = () => {
         navigator.clipboard.writeText(htmlCode)
+        toast({
+            variant:"destructive",
+            title: "Copied to clipboard",
+            color: "success"
+        })
     }
     return (
         <Dialog open={openDialog} onOpenChange={closeDialog}>

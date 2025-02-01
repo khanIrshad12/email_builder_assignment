@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { auth } from "@/auth"
 import SignOut from "./sign-out";
+import SignIn from "./sign-in";
 
 export default async function Header() {
     
@@ -23,7 +24,7 @@ export default async function Header() {
         </div>
       ) : (
         <Button asChild>
-          <Link href="/auth/signin">Sign Up</Link>
+         <SignIn/>
         </Button>
       )}
     </header>
