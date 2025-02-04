@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import { Code, Monitor, Smartphone } from 'lucide-react'
+import { Code, Mail, Monitor, Smartphone } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { useHelperProvider } from '../provider/HelperProvider'
@@ -8,6 +8,7 @@ import { usePathname } from 'next/navigation'
 import { useMutation } from 'convex/react'
 import { api } from '@/convex/_generated/api'
 import { useToast } from '@/hooks/use-toast'
+import SignOut from './sign-out'
 
 const EditorHeader = ({ viewHTMLCode }: { viewHTMLCode: (v: boolean) => void }) => {
     const [isSending, setIsSending] = React.useState(false);
@@ -65,11 +66,19 @@ const EditorHeader = ({ viewHTMLCode }: { viewHTMLCode: (v: boolean) => void }) 
     }
 
     return (
-        <nav className="w-full py-6 px-4 flex justify-between items-center bg-white shadow-md">
-            <Link href="/" className="text-2xl font-bold">
-                EmailBuilder
-            </Link>
+        <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex justify-between items-center py-4 px-6">
+            <div className='flex gap-3'>
 
+                <Link href="/" className="flex items-center space-x-2">
+                    <Mail className="h-6 w-6" />
+                    <span className="text-xl font-bold">EmailBuilder</span>
+
+                </Link>
+                {
+                    path.includes("/editor") && <Link href="/dashboard" className='bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded-md text-white' >Dashboard</Link>
+                }
+            </div>
+            {path === "/dashboard" && <SignOut />}
             {(path !== "/dashboard" && path !== "/") &&
                 <>
                     <div className='space-x-2'>

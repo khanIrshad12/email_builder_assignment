@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { SessionProvider } from "next-auth/react"
 import { ConvexClientProvider } from "./provider/ConvexClientProvider"
 import {HelperProvider} from "./provider/HelperProvider"
+import Footer from "./components/Footer"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -24,6 +25,7 @@ export default function RootLayout({
           <HelperProvider>
             <ConvexClientProvider>
               {children}
+              <Footer/>
               <Toaster />
             </ConvexClientProvider>
           </HelperProvider>
