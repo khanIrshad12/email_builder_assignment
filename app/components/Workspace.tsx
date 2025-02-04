@@ -11,12 +11,10 @@ const Workspace = ({ EmailId, handleCreateTemplate }: { EmailId: string, handleC
     const convex = useConvex();
     const fetchEmailList = async () => {
         const templates = await convex.query(api.emailTemplate.GetTemplateByEmail, { email: EmailId });
-        console.log("templates", templates);
 
         if (templates?.length == 0) {
             setEmailList([]);
         } else {
-            console.log("templates", templates);
             setEmailList(templates);
         }
     }
@@ -42,13 +40,25 @@ const Workspace = ({ EmailId, handleCreateTemplate }: { EmailId: string, handleC
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-                    {emailList.map((template) => {
+                    {emailList?.map((template) => {
+
                         let parsedDesign;
                         try {
-                            parsedDesign = JSON.parse(template.design as unknown as string);
-                            console.log("parsedDesign", parsedDesign);
+                            if (template?.design.length == 0) {
+                                parsedDesign = [];
+                                return (
+                                    <Link href={`/editor/${template.tid}`} key={template._id} className="border p-4 rounded-lg shadow-md">
+                                        <h2 className="text-lg font-semibold">Template ID: {template.tid}</h2>
+                                        <p className="text-gray-600">Email: {template.email}</p>
+                                        <p className="text-gray-600">No Design</p>
+                                    </Link>
+                                )
+                            }
+                            parsedDesign = JSON.parse(template?.design as unknown as string);
 
-                        } catch (error) {
+                        }
+
+                        catch (error) {
                             console.error("Error parsing design JSON:", error);
                             parsedDesign = [];
                         }
@@ -61,7 +71,7 @@ const Workspace = ({ EmailId, handleCreateTemplate }: { EmailId: string, handleC
                                 {/* Render Parsed Design */}
                                 <div className="mt-2">
                                     {parsedDesign.map((column: LayoutType, index: number) => {
-                                        console.log("column", column);
+                                     
                                         return (
                                             <div key={index} className=" p-2 mb-2 rounded">
                                                 {Object.values(column).map((item, idx: number) => {
@@ -89,6 +99,18 @@ const Workspace = ({ EmailId, handleCreateTemplate }: { EmailId: string, handleC
                                                                 key={idx}
                                                                 src={item.imageUrl}
                                                                 alt={item.alt || 'Image'}
+                                                                width={200}
+                                                                height={100}
+                                                                style={item.style}
+                                                                className="mx-auto"
+                                                            />
+                                                        );
+                                                    } else if (item.type === 'LogoHeader') {
+                                                        return (
+                                                            <img
+                                                                key={idx}
+                                                                src={item.imageUrl}
+                                                                alt={item.alt || 'Logo'}
                                                                 width={200}
                                                                 height={100}
                                                                 style={item.style}
@@ -127,6 +149,40 @@ const Workspace = ({ EmailId, handleCreateTemplate }: { EmailId: string, handleC
                                                                 style={element?.style}
                                                                 className="mx-auto"
                                                             />
+                                                        );
+                                                    } else if (element?.type === 'Logo') {
+                                                        return (
+                                                            <img
+                                                                key={idx}
+                                                                src={element?.imageUrl}
+                                                                alt={element?.alt || 'Logo'}
+                                                                width={200}
+                                                                height={100}
+                                                                style={element?.style}
+                                                                className="mx-auto"
+                                                            />
+                                                        );
+                                                    } else if (element?.type === 'LogoHeader') {
+                                                        return (
+                                                            <img
+                                                                key={idx}
+                                                                src={element?.imageUrl}
+                                                                alt={element?.alt || 'Image'}
+                                                                width={200}
+                                                                height={100}
+                                                                style={element?.style}
+                                                                className="mx-auto"
+                                                            />
+                                                        );
+                                                    } else if (element?.type === 'Divider') {
+                                                        return (
+                                                            <div
+                                                                key={idx}
+                                                                style={element?.style}
+                                                                className="block text-center"
+                                                            >
+
+                                                            </div>
                                                         );
                                                     }
                                                     return null;

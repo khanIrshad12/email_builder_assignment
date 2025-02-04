@@ -30,7 +30,6 @@ const Page = () => {
         const user = session?.user;
 
         if (user && !userSaved) {
-          console.log("inside user unsaved");
 
           await CreateUser({
             name: user.name || "",
@@ -55,7 +54,6 @@ const Page = () => {
   const handleCreateTemplate = async () => {
     if (!EmailId) return;
     const tid = uuidv4(); // Generate unique ID
-    console.log("tid", tid);
 
     try {
       await SaveTemplate({
@@ -71,7 +69,7 @@ const Page = () => {
   };
 
   if (status === 'loading') {
-    return <div>Loading...</div>;
+    return <div className='flex justify-center items-center h-screen'>Loading...</div>;
   }
 
   return <>

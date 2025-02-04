@@ -27,15 +27,12 @@ const ColumnLayout = ({ layout }: { layout: LayoutType }) => {
         const index = dragOver?.index;
         if (index !== undefined) {
             setEmailTemplate((prevColumns: LayoutType[]) => prevColumns.map((col) => {
-                console.log("col", col,layout?.id);
                 
                 if (col.id === layout?.id) {
                     const newElements = [...(col.elements || [])];
-                    console.log("newElementsfirst", newElements);
                     if (dragElementLayout?.dragElement) {
                         newElements[index] = dragElementLayout.dragElement;
                     }
-                    console.log("newElementsSecond", newElements);
                     
                     return { ...col, elements: newElements };
                 }
@@ -47,7 +44,6 @@ const ColumnLayout = ({ layout }: { layout: LayoutType }) => {
     }
 
     const GetElementComponent = (element: DragElementLayoutElement) => {
-        console.log("elemmt",element);
         
         if (element?.type == "Button") {
             return <ButtonComponent element={element} />
@@ -70,7 +66,6 @@ const ColumnLayout = ({ layout }: { layout: LayoutType }) => {
         setEmailTemplate(updateEmailTemplate)
         setSelectedElement(null)
     }
-
 
     return (
         <div className='relative'>

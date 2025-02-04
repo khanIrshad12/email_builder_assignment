@@ -27,15 +27,12 @@ const Canvas = ({ viewHTMLCode, closeDialog }: { viewHTMLCode: boolean, closeDia
   const onDropHandle = () => {
     setDragOver(false)
     const layout = (dragElementLayout as unknown as DragElementLayout)?.dragLayout;
-    console.log("layout", layout);
     if (layout) {
       setEmailTemplate(prev => [...prev, layout]);
     }
   };
 
   const getLayoutComoponent = (layout: LayoutType) => {
-    console.log("layout", layout);
-
     if (layout?.type === "column") {
       return <ColumnLayout layout={layout} />;
     }
@@ -43,7 +40,7 @@ const Canvas = ({ viewHTMLCode, closeDialog }: { viewHTMLCode: boolean, closeDia
   }
 
   useEffect(() => {
-    
+
     if (viewHTMLCode) {
       GetHtmlCode()
     }

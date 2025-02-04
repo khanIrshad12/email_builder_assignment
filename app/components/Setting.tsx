@@ -28,7 +28,6 @@ const Setting = () => {
       value: "right",
     },
   ]
-  console.log("seleted", element);
   useEffect(() => {
 
     const selectedElementData = selectedElement?.layout?.elements?.[selectedElement?.index];
@@ -50,21 +49,17 @@ const Setting = () => {
     }
   }, [selectedElement]);
 
-  console.log("selectedElement", selectedElement);
   const onInputHandler = (fieldName: string, value: string[]) => {
     //copy the current selectedelement
-    console.log("filename", fieldName, value);
-    console.log();
 
     if (!selectedElement) return;
     const updatedData: SelectedElementInterface = { ...selectedElement };
-    console.log("updatedData", updatedData);
+
 
     //update the specific field
     if (selectedElement.index !== undefined) {
       if (updatedData.layout.elements) {
 
-        console.log(updatedData.layout);
         //@ts-expect-error - Skipping type check for this specific line
         (updatedData.layout.elements[selectedElement.index])[fieldName] = value;
       }
@@ -101,8 +96,6 @@ const Setting = () => {
   const onHandlerOuterStyle = (fieldName: string, value: string) => {
 
     if (!selectedElement || selectedElement.index === undefined) return;
-
-    console.log("handle outer style", value, fieldName);
 
     // Copy the current selected element
     const updatedData = {
@@ -151,7 +144,17 @@ const Setting = () => {
       }
 
       {
-        (element?.type == "Button" || element?.type == "Text") &&
+        element?.type == "Logo" &&
+        <InputFields label='Logo Url' values={[element.imageUrl || '']}
+          onInputHandler={(value: string[]) => onInputHandler('imageUrl', value)} />
+      }
+      {
+        element?.type == "LogoHeader" &&
+        <InputFields label='Logo Header' values={[element.imageUrl || '']}
+          onInputHandler={(value: string[]) => onInputHandler('imageUrl', value)} />
+      }
+      {
+        (element?.type == "Button" || element?.type == "Text" ) &&
         <>
           <InputFields label='Content' values={[element?.content || '']}
             onInputHandler={(value: string[]) => onInputHandler('content', value)} />

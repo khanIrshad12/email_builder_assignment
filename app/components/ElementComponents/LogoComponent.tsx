@@ -6,6 +6,7 @@ interface LogoComponentProps {
 }
 
 const LogoComponent = ({ element }: LogoComponentProps) => {
+
   return (
     <div style={element.outerStyle}>
       <img src={element.imageUrl} style={element.style} alt='logo' />
