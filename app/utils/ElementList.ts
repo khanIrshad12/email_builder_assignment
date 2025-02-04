@@ -6,7 +6,7 @@ export default [
         label: "Button",
         type: "Button",
         content: 'Sample Button',
-        url: 'example.com',
+        url: '',
         style: {
             backgroundColor: "#007bff",
             color: "#fff",
