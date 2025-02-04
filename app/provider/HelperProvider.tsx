@@ -12,6 +12,10 @@ interface HelperContextType {
     setEmailTemplate: React.Dispatch<React.SetStateAction<Array<object>>>;
     selectedElement: SelectedElementInterface | null;
     setSelectedElement: React.Dispatch<React.SetStateAction<SelectedElementInterface | null>>;
+    htmlCode: string;
+    setHtmlCode: React.Dispatch<React.SetStateAction<string>>;
+    htmlRef: React.RefObject<HTMLDivElement | null>;
+    GetHtmlCode: () => void;
 }
 
 const HelperContext = createContext<HelperContextType | undefined>(undefined);
@@ -22,7 +26,8 @@ export const HelperProvider = ({ children }: { children: React.ReactNode }) => {
     const [dragElementLayout, setDragElementLayout] = useState<DragElementLayoutElement | DragElementPayload | null>(null);
     const [emailTemplate, setEmailTemplate] = useState<Array<object>>([]);
     const [selectedElement, setSelectedElement] = useState<SelectedElementInterface | null>(null);
-  
+    const [htmlCode, setHtmlCode] = useState<string>('')
+    const htmlRef = React.useRef<HTMLDivElement>(null);
     useEffect(() => {
         if (selectedElement) {
             setEmailTemplate(prevTemplates =>
@@ -46,6 +51,12 @@ export const HelperProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, [emailTemplate]);
 
+    
+    const GetHtmlCode = () => {
+        const htmlContent = htmlRef.current?.innerHTML;
+        console.log(htmlContent);
+        setHtmlCode(htmlContent || '');
+    }
 
 
     return (
@@ -58,7 +69,11 @@ export const HelperProvider = ({ children }: { children: React.ReactNode }) => {
             emailTemplate,
             setEmailTemplate,
             selectedElement,
-            setSelectedElement
+            setSelectedElement,
+            setHtmlCode,
+            htmlCode,
+            htmlRef,
+            GetHtmlCode
         }}>
 
             {children}

@@ -10,8 +10,9 @@ import { api } from '@/convex/_generated/api'
 import { useToast } from '@/hooks/use-toast'
 
 const EditorHeader = ({ viewHTMLCode }: { viewHTMLCode: (v: boolean) => void }) => {
+    const [isSending, setIsSending] = React.useState(false);
+    const { screenSize, setScreenSize, emailTemplate, htmlRef } = useHelperProvider();
     const path = usePathname();
-    const { screenSize, setScreenSize, emailTemplate } = useHelperProvider();
     const { toast } = useToast()
 
     const updateTemplate = useMutation(api.emailTemplate.UpdateTemplate);
@@ -24,17 +25,51 @@ const EditorHeader = ({ viewHTMLCode }: { viewHTMLCode: (v: boolean) => void }) 
         })
         toast({
             title: "Email Template Saved Successfully",
-           
-          })
+
+        })
         console.log("click save");
 
     }
+    const handleSendEmail = async () => {
+        const htmlContent = htmlRef.current?.innerHTML
+        console.log("htmlContent", htmlContent);
+        try {
+            setIsSending(true);
+            const response = await fetch('/api/emailsend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    subject: 'Your Email Template',
+                    htmlContent
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) throw new Error(data.error || 'Failed to send email');
+
+            toast({
+                title: "Email sent successfully",
+            });
+        } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : "Failed to send email";
+            toast({
+                title: errorMessage,
+                variant: "destructive"
+            });
+        } finally {
+            setIsSending(false);
+        }
+    }
+
     return (
         <nav className="w-full py-6 px-4 flex justify-between items-center bg-white shadow-md">
             <Link href="/" className="text-2xl font-bold">
                 EmailBuilder
             </Link>
-            
+
             {(path !== "/dashboard" && path !== "/") &&
                 <>
                     <div className='space-x-2'>
@@ -47,7 +82,7 @@ const EditorHeader = ({ viewHTMLCode }: { viewHTMLCode: (v: boolean) => void }) 
                             <Code />
                         </Button>
 
-                        {/* <Button className='' variant='outline'>Send Test Email</Button> */}
+                        <Button className='' variant='outline' onClick={handleSendEmail}>{isSending ? "Sending..." : "Send Test Email"}</Button>
                         <Button className='bg-purple-500' onClick={handleSave}>Save Template</Button>
 
                     </div>

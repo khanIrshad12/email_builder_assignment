@@ -10,8 +10,6 @@ import DividerComponent from './ElementComponents/DividerComponent';
 import { DragElementLayout, DragElementLayoutElement, LayoutType } from '../types';
 import { Trash } from 'lucide-react';
 
-
-
 const ColumnLayout = ({ layout }: { layout: LayoutType }) => {
     const [dragOver, setDragOver] = useState<{ index?: number; columnId?: number } | null>({});
     const { emailTemplate, setEmailTemplate, dragElementLayout, selectedElement, setSelectedElement } = useHelperProvider() as { emailTemplate: LayoutType[], setEmailTemplate: React.Dispatch<React.SetStateAction<LayoutType[]>>, dragElementLayout: DragElementLayout, selectedElement: { layout: LayoutType, index: number } | null, setSelectedElement: React.Dispatch<React.SetStateAction<{ layout: LayoutType, index: number } | null>> };
@@ -22,7 +20,6 @@ const ColumnLayout = ({ layout }: { layout: LayoutType }) => {
             index,
             columnId: layout?.id
         })
-
     }
 
     /*  */

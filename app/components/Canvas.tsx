@@ -10,14 +10,13 @@ const Canvas = ({ viewHTMLCode, closeDialog }: { viewHTMLCode: boolean, closeDia
   const { screenSize,
     dragElementLayout,
     emailTemplate,
-    setEmailTemplate
+    setEmailTemplate,
+    htmlRef,
+    htmlCode,
+    GetHtmlCode
   } = useHelperProvider();
 
   const [dragOver, setDragOver] = useState<boolean>(false);
-  const [htmlCode, setHtmlCode] = useState<string>('')
-  const htmlRef = React.useRef<HTMLDivElement>(null);
-
-
 
   const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -34,29 +33,21 @@ const Canvas = ({ viewHTMLCode, closeDialog }: { viewHTMLCode: boolean, closeDia
     }
   };
 
-
-
   const getLayoutComoponent = (layout: LayoutType) => {
     console.log("layout", layout);
-    
+
     if (layout?.type === "column") {
       return <ColumnLayout layout={layout} />;
     }
 
   }
 
-  const GetHtmlCode = () => {
-    if (viewHTMLCode) {
-      const htmlContent = htmlRef.current?.innerHTML;
-      console.log(htmlContent);
-      setHtmlCode(htmlContent || '');
-
-    }
-  }
-
-
   useEffect(() => {
-    GetHtmlCode()
+    
+    if (viewHTMLCode) {
+      GetHtmlCode()
+    }
+
   }, [viewHTMLCode])
 
   return (
